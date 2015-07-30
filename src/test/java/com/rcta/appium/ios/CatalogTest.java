@@ -6,8 +6,9 @@ import static com.rcta.appium.ios.screen.HomePage.welcomePageLoaded;
 import com.rcta.appium.ios.util.AppiumTestBase;
 import static com.rcta.appium.ios.util.Helper.back;
 import io.appium.java_client.MobileElement;
+import org.junit.Ignore;
 import org.junit.Test;
-
+@Ignore
 public class CatalogTest extends AppiumTestBase {
     @Test
     public void buttonPageTest() {

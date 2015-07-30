@@ -18,11 +18,34 @@ import java.util.concurrent.TimeUnit;
 
 public class AppiumTestBase implements SauceOnDemandSessionIdProvider {
 
+    public static String UDID_XME0453 = "7211b9754480c6ad07744002a1f832f78d57933e";
+    public static String PLATFORM_VERSION = "8.4";
+    public static String DEVICE_NAME = "iPhone 6";
+    public static String APPIUM_VERSION = "1.4.8";
+
+    static {
+//        option1();
+        option2();
+    }
+
+    private static void option1() {
+        PLATFORM_VERSION = "8.4";
+        DEVICE_NAME = "iPhone 6";
+        APPIUM_VERSION = "1.4.8";
+    }
+
+    private static void option2() {
+        PLATFORM_VERSION = "7.0.4";
+        DEVICE_NAME = "iPhone 5s";
+        APPIUM_VERSION = "1.4.8";
+    }
+
     private IOSDriver iosDriver;
 
     private String sessionId;
 
     public static final String DEFAULT_WD_HUB_URL = "http://127.0.0.1:4723/wd/hub";
+
 
     final private String USERNAME = System.getenv("SAUCE_USERNAME");
 
@@ -43,14 +66,15 @@ public class AppiumTestBase implements SauceOnDemandSessionIdProvider {
     @Before
     public void setup() {
         DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
-        desiredCapabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, "8.4");
-        desiredCapabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "iPhone 6");
-        desiredCapabilities.setCapability("appiumVersion", "1.4.8");
+        desiredCapabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, PLATFORM_VERSION);
+        desiredCapabilities.setCapability(MobileCapabilityType.DEVICE_NAME, DEVICE_NAME);
+        desiredCapabilities.setCapability("appiumVersion", APPIUM_VERSION);
         desiredCapabilities.setCapability("name", name.getMethodName());
         URL sauceUrl = null;
 
         String userDir = System.getProperty("user.dir");
-        String localApp = "UICatalog.app";
+//        String localApp = "UICatalog.app";
+        String localApp = "RCMobile_7.4_release_7.4.0.1.17_XIA_UP_Development.ipa";
 
         if (runOnSauce) {
             desiredCapabilities.setCapability(MobileCapabilityType.APP, "http://appium.s3.amazonaws.com/TestApp6.0.app.zip");
@@ -63,7 +87,7 @@ public class AppiumTestBase implements SauceOnDemandSessionIdProvider {
             iosDriver = new IOSDriver(sauceUrl, desiredCapabilities);
             iosDriver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
             sessionId = iosDriver.getSessionId().toString();
-        }else {
+        } else {
             String appPath = Paths.get(userDir, localApp).toAbsolutePath().toString();
             desiredCapabilities.setCapability(MobileCapabilityType.APP, appPath);
             try {
@@ -78,7 +102,7 @@ public class AppiumTestBase implements SauceOnDemandSessionIdProvider {
 
     @After
     public void tearDown() {
-        System.out.println("Link to your job: https://saucelabs.com/jobs/" + this.getSessionId());
+        System.out.println("sessionId = " + this.getSessionId());
         iosDriver.quit();
     }
 }
